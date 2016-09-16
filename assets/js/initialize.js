@@ -74,6 +74,11 @@ var Table = Backbone.Model.extend({
 var TableView = Backbone.View.extend({
   // Bind view to table in index.html
   el: '#table',
+  
+  events: {
+    'click #plus': 'addRow'
+    // Add keyup event
+  },
 
   initialize: function(){
 
@@ -83,6 +88,10 @@ var TableView = Backbone.View.extend({
     this.$el.click(function(){
       //
     });
+  },
+  
+  addRow: function(){
+    this.model.numRows += 1;
   },
 
   bindGraph: function(graphModel){
