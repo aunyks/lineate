@@ -49,7 +49,7 @@ var GraphView = Backbone.View.extend({
             }]
           },
           responsive: true,
-          responsiveAnimationDuration: 500,
+          responsiveAnimationDuration: 250,
           title: {
             position: 'top',
             fontColor: '#000',
@@ -63,11 +63,11 @@ var GraphView = Backbone.View.extend({
       this.chart = new Chart(this.$el, this.chartData);
   },
 
-  // Should be called each time model a new point is added
   render: function(){
 
   },
 
+  // Called each time a new value added to point table
   sync: function(){
     this.chart.data.datasets[0].data = this.model.points;
     this.chart.data.datasets[1].data = this.model.regressionPoints;
