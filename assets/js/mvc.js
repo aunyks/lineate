@@ -24,28 +24,21 @@ var GraphView = Backbone.View.extend({
   initialize: function(){
     this.chartData = {
         type: 'line',
-        labels: function(){
-                  var list = [];
-                  for (var i = this.model.minX; i <= this.model.maxX; i++) {
-                      list.push((''+i));
-                  }
-                  console.log(list);
-                  return list;
-        },
+        labels: fillRange(this.model.minX, this.model.maxX),
         data: {
           datasets: [{
             label: 'Scattered Points',
             backgroundColor: '#00f',
             pointBackgroundColor: '#00f',
-            pointRadius: 50,
-            data: this.model.points//filterY(this.model.points)
+            pointRadius: 10,
+            data: this.model.points
           }, {
             label: 'Regression Line',
             backgroundColor: '#f00',
             pointBackgroundColor: '#f00',
             borderColor: '#f00',
-            pointRadius: 50,
-            data: this.model.regressionPoints//filterY(this.model.regressionPoints)
+            pointRadius: 10,
+            data: this.model.regressionPoints
           }]
         },
         options: {
@@ -76,8 +69,9 @@ var GraphView = Backbone.View.extend({
   },
 
   sync: function(){
-    this.chart.data.datasets[0].data = filterY(this.model.points);
-    this.chart.data.datasets[1].data = filterY(this.model.regressionPoints);
+    this.chart.data.datasets[0].data = this.model.points;
+    this.chart.data.datasets[1].data = this.model.regressionPoints;
+    this.chart.labels = fillRange(this.model.minX, this.model.maxX);
     this.chart.update();
   }
 
