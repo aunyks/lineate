@@ -28,7 +28,7 @@ var GraphView = Backbone.View.extend({
         data: {
           datasets: [{
             label: 'Scattered Points',
-            backgroundColor: '#00f',
+            backgroundColor: 'rgba(0, 0, 0, 0)',
             pointBackgroundColor: '#00f',
             pointRadius: 10,
             data: this.model.points
