@@ -22,13 +22,12 @@ var GraphView = Backbone.View.extend({
 
   // Build the chart object on initialization
   initialize: function(){
-
-    this.chart = new Chart(this.$el, {
+    this.chartData = {
         type: 'line',
         labels: function(){
                   var list = [];
                   for (var i = this.model.minX; i <= this.model.maxX; i++) {
-                      list.push(i);
+                      list.push((''+i));
                   }
                   console.log(list);
                   return list;
@@ -36,15 +35,17 @@ var GraphView = Backbone.View.extend({
         data: {
           datasets: [{
             label: 'Scattered Points',
-            backgroundColor: '#fff',
+            backgroundColor: '#00f',
             pointBackgroundColor: '#00f',
-            data: this.model.points
+            pointRadius: 50,
+            data: this.model.points//filterY(this.model.points)
           }, {
             label: 'Regression Line',
-            backgroundColor: '#fff',
+            backgroundColor: '#f00',
             pointBackgroundColor: '#f00',
             borderColor: '#f00',
-            data: this.model.regressionPoints
+            pointRadius: 50,
+            data: this.model.regressionPoints//filterY(this.model.regressionPoints)
           }]
         },
         options: {
@@ -61,16 +62,23 @@ var GraphView = Backbone.View.extend({
             fontColor: '#000',
             text: 'Lineate',
             fontSize: 43
-          }
+          },
+          scaleGridLineColor: "black",
+          pointDotRadius: 50
         }
-      });
-      this.model.on('change', this.render(), this);
+      };
+      this.chart = new Chart(this.$el, this.chartData);
   },
 
   // Should be called each time model a new point is added
   render: function(){
+
+  },
+
+  sync: function(){
+    this.chart.data.datasets[0].data = filterY(this.model.points);
+    this.chart.data.datasets[1].data = filterY(this.model.regressionPoints);
     this.chart.update();
-    console.log('Chart updated');
   }
 
 });
@@ -84,8 +92,8 @@ var TableView = Backbone.View.extend({
     'keyup .input-cell': 'addPoint'
   },
 
-  initialize: function(){
-
+  initialize: function(options){
+    this.graphView = options.graphView;
   },
 
   render: function(){
@@ -119,12 +127,13 @@ var TableView = Backbone.View.extend({
         maxX = $('.input-cell').eq(i).val();
       }
     }
-    this.model.set({
-      'minX': minX,
-      'maxX': maxX,
-      'numPoints': gotPoints.length,
-      'points': gotPoints
-    });
+    this.model.minX = minX;
+    this.model.maxX = maxX;
+    this.model.numPoints = gotPoints.length;
+    this.model.points = gotPoints;
+
+    // Repaint chart
+    this.graphView.sync();
   },
 
   bindGraph: function(graphModel){
