@@ -62,7 +62,19 @@ th.extra-space {
   padding: 14px;
 }
 
+th.cell {
+  padding: 0px;
+}
+
+td.cell {
+  padding: 0px;
+}
+
 #plus {
   background-color: rgba(100, 100, 255, 0.8);
   color: white;
+}
+
+.input-cell {
+  text-align: center;
 }
