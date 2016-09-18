@@ -57,7 +57,8 @@ var GraphView = Backbone.View.extend({
             fontSize: 43
           },
           scaleGridLineColor: "black",
-          pointDotRadius: 50
+          pointDotRadius: 50,
+          bezierCurve: false
         }
       };
       this.chart = new Chart(this.$el, this.chartData);
