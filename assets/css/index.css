@@ -71,6 +71,12 @@ td.cell {
   padding: 0px;
 }
 
+.center-me {
+  position: relative;
+  left: 45%;
+  display: block;
+}
+
 #plus {
   background-color: rgba(100, 100, 255, 0.8);
   color: white;

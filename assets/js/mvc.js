@@ -34,7 +34,7 @@ var GraphView = Backbone.View.extend({
             data: this.model.points
           }, {
             label: 'Regression Line',
-            backgroundColor: '#f00',
+            backgroundColor: 'rgba(0, 0, 0, 0)',
             pointBackgroundColor: '#f00',
             borderColor: '#f00',
             pointRadius: 10,
@@ -73,6 +73,7 @@ var GraphView = Backbone.View.extend({
     this.chart.data.datasets[0].data = this.model.points;
     this.chart.data.datasets[1].data = this.model.regressionPoints;
     this.chart.labels = fillRange(this.model.minX, this.model.maxX);
+    $('#fofx').html('Best fit: <strong>f(x)=</strong> ' + this.model.equation);
     this.chart.update();
   }
 
@@ -126,6 +127,18 @@ var TableView = Backbone.View.extend({
     this.model.maxX = maxX;
     this.model.numPoints = gotPoints.length;
     this.model.points = gotPoints;
+    var regressObj = lineRegress(gotPoints);
+    var fOfX = regressObj.func;
+    var slope = regressObj.m;
+    var intercept = regressObj.b.decimalPlaces(2);
+
+    var gotRegressPoints = [];
+    for(var i = 0; i < gotPoints.length; i++){
+      gotRegressPoints.push({ x: gotPoints[i].x, y: fOfX(gotPoints[i].x) });
+    }
+
+    this.model.regressionPoints = gotRegressPoints;
+    this.model.equation = '' + slope + 'x + ' + intercept;
 
     // Repaint chart
     this.graphView.sync();

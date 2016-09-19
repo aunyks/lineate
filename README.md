@@ -4,7 +4,7 @@ A small website for finding the best mathematical model for certain data points.
 ## What does it do?
 It finds the line of best fit.
 
-Oh, you want the technicals? Well, it finds the regression model with the lowest amount of error using Chi-Square analysis.
+Oh, you want the technicals? Well, it finds the regression model with the lowest amount of error using R^2 analysis.
 
 ## Why Lineate?
 Finding the best models for data sets can be a grueling and time-heavy process. Unless you're a data scientist or math person, you don't see the fun in finding a regression model. Lineate makes your life easier by automating the whole process and telling you how good the proposed models actually come out to be.
