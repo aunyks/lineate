@@ -129,8 +129,8 @@ var TableView = Backbone.View.extend({
     this.model.points = gotPoints;
     var regressObj = lineRegress(gotPoints);
     var fOfX = regressObj.func;
-    var slope = regressObj.m;
-    var intercept = regressObj.b.decimalPlaces(2);
+    var slope = regressObj.m.decimalPlaces(3);
+    var intercept = regressObj.b.decimalPlaces(3);
 
     var gotRegressPoints = [];
     for(var i = 0; i < gotPoints.length; i++){
