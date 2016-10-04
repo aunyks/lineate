@@ -73,7 +73,7 @@ var GraphView = Backbone.View.extend({
     this.chart.data.datasets[0].data = this.model.points;
     this.chart.data.datasets[1].data = this.model.regressionPoints;
     this.chart.labels = fillRange(this.model.minX, this.model.maxX);
-    $('#fofx').html('Best fit: <strong>f(x)=</strong> ' + this.model.equation);
+    document.getElementById('fofx').innerHTML = ('Best fit: <strong>f(x)=</strong> ' + this.model.equation);
     this.chart.update();
   }
 

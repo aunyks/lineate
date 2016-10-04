@@ -16,11 +16,9 @@ function fillRange(min, max){
 
 // Convert points: {x: a, x: b} -> [a, b]
 function filterPoints(arrPoints){
-  var points = [];
-  for(var i = 0; i < arrPoints.length; i++){
-    points.push( [arrPoints[i].x, arrPoints[i].y] );
-  }
-  return points;
+  return arrPoints.map(function(oPoint){
+    return [oPoint.x, oPoint.y];
+  });
 }
 
 // Return a function that can compute the regression points
