@@ -132,10 +132,9 @@ var TableView = Backbone.View.extend({
     var slope = regressObj.m;
     var intercept = regressObj.b.decimalPlaces(2);
 
-    var gotRegressPoints = [];
-    for(var i = 0; i < gotPoints.length; i++){
-      gotRegressPoints.push({ x: gotPoints[i].x, y: fOfX(gotPoints[i].x) });
-    }
+    var gotRegressPoints = gotPoints.map(function(point){
+      return { x: point.x, y: fOfX(point.x) };
+    });
 
     this.model.regressionPoints = gotRegressPoints;
     this.model.equation = '' + slope + 'x + ' + intercept;
