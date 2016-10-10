@@ -88,7 +88,8 @@ var linearRegress = function(points){
 
   var slope = ((points.length * sumXY) - (sumX * sumY)) /
               ((points.length * sumXX) - (sumX * sumX));
-  var intercept = (sumY / points.length) - ((slope * sumX) / points.length);
+  //var intercept = (sumY / points.length) - ((slope * sumX) / points.length);
+  var intercept = (points[0].y - (slope * points[0].x));
 
   if(isNaN(slope))
     slope = 0;
