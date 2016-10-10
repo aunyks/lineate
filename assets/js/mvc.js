@@ -10,7 +10,8 @@ var Graph = Backbone.Model.extend({
     'equation': '0',
   },
   points: [],
-  regressionPoints: [],
+  lineRegressPoints: [],
+  polyRegressPoints: [],
   minX: 0,
   maxX: 0,
 });
@@ -33,13 +34,20 @@ var GraphView = Backbone.View.extend({
             pointRadius: 10,
             data: this.model.points
           }, {
-            label: 'Regression Line',
+            label: 'Linear Regression',
             backgroundColor: 'rgba(0, 0, 0, 0)',
             pointBackgroundColor: '#f00',
             borderColor: '#f00',
             pointRadius: 10,
-            data: this.model.regressionPoints
-          }]
+            data: this.model.lineRegressPoints
+          }, {
+            label: 'Polynomial Regression',
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            pointBackgroundColor: '#0d0',
+            borderColor: '#0d0',
+            pointRadius: 10,
+            data: this.model.polyRegressPoints
+          },]
         },
         options: {
           scales: {
@@ -71,9 +79,12 @@ var GraphView = Backbone.View.extend({
   // Called each time a new value added to point table
   sync: function(){
     this.chart.data.datasets[0].data = this.model.points;
-    this.chart.data.datasets[1].data = this.model.regressionPoints;
+    this.chart.data.datasets[1].data = this.model.lineRegressPoints;
+    this.chart.data.datasets[2].data = this.model.polyRegressPoints;
+
     this.chart.labels = fillRange(this.model.minX, this.model.maxX);
-    document.getElementById('fofx').innerHTML = ('Best fit: <strong>f(x)=</strong> ' + this.model.equation);
+    document.getElementById('linear').innerHTML = ('Best line: <strong>f(x)≈</strong> ' + this.model.lineEquation);
+    document.getElementById('poly').innerHTML = ('Best parabola: <strong>g(x)≈</strong> ' + this.model.polyEquation);
     this.chart.update();
   }
 
@@ -127,17 +138,30 @@ var TableView = Backbone.View.extend({
     this.model.maxX = maxX;
     this.model.numPoints = gotPoints.length;
     this.model.points = gotPoints;
-    var regressObj = lineRegress(gotPoints);
-    var fOfX = regressObj.func;
-    var slope = regressObj.m;
-    var intercept = regressObj.b.decimalPlaces(2);
 
-    var gotRegressPoints = gotPoints.map(function(point){
+    var lineRegressObj = lineRegress(gotPoints);
+    var fOfX = lineRegressObj.func;
+    var slope = lineRegressObj.m.decimalPlaces(2);
+    var intercept = lineRegressObj.b.decimalPlaces(2);
+    var gotLineRegressPoints = gotPoints.map(function(point){
       return { x: point.x, y: fOfX(point.x) };
     });
 
-    this.model.regressionPoints = gotRegressPoints;
-    this.model.equation = '' + slope + 'x + ' + intercept;
+    this.model.lineRegressPoints = gotLineRegressPoints;
+    this.model.lineEquation = '' + slope + 'x + ' + intercept;
+
+    var polyRegressObj = polynomialRegress(gotPoints);
+    fOfX = polyRegressObj.func;
+    var a = polyRegressObj.a.decimalPlaces(2);
+    var b = polyRegressObj.b.decimalPlaces(2);
+    var c = polyRegressObj.c.decimalPlaces(2);
+    var gotPolyRegressPoints = gotPoints.map(function(point){
+      return { x: point.x, y: fOfX(point.x) };
+    });
+
+    this.model.polyRegressPoints = gotPolyRegressPoints;
+    this.model.polyEquation = '' + a + 'x<sup>2</sup> + ' + b + 'x + ' + c;
+
 
     // Repaint chart
     this.graphView.sync();

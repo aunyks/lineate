@@ -13,25 +13,27 @@ function fillRange(min, max){
   return list;
 }
 
-
-// Convert points: {x: a, x: b} -> [a, b]
-function filterPoints(arrPoints){
-  return arrPoints.map(function(oPoint){
-    return [oPoint.x, oPoint.y];
-  });
-}
-
 // Return a function that can compute the regression points
 function lineRegress(points){
-  var rawPoints = filterPoints(points);
-  var linearEquation = ss.linearRegression(rawPoints);
-
+  var linearEquation = linearRegress(points);
   return {
     func: function(x){
       return (x * linearEquation.m) + linearEquation.b;
     },
     m: linearEquation.m,
     b: linearEquation.b
+  };
+}
+
+function polynomialRegress(points){
+  var equation = polyRegress(points);
+  return {
+    func: function(x){
+      return ( (equation.a * (x * x)) + (equation.b * x) + equation.c);
+    },
+    a: equation.a,
+    b: equation.b,
+    c: equation.c
   };
 }
 
