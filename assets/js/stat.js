@@ -151,7 +151,7 @@ var polyRegress = function(points){
   var resultMatrix = math.multiply(math.inv(dMatrix), eMatrix);
 
   return {
-    c: math.subset(resultMatrix, math.index(0, 0)),
+    c: (points[0].y - (math.subset(resultMatrix, math.index(2, 0)) * (points[0].x * points[0].x)) - (math.subset(resultMatrix, math.index(1, 0)) * points[0].x)),
     b: math.subset(resultMatrix, math.index(1, 0)),
     a: math.subset(resultMatrix, math.index(2, 0))
   };
